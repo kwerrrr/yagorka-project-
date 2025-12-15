@@ -147,7 +147,6 @@ if __name__ == "__main__":
 
         choice = input("Выберите действие(1-4): ").strip()
 
-
         if choice == "1":
             add_expense()
         elif choice == "2":
