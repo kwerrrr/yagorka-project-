@@ -1,9 +1,8 @@
 import sys
 import os
 
-sys.path.append(os.path.abspath("src"))
+from src.main import transactions
 
-from main import transactions
 
 def test_transactions_empty():
     transactions.clear()
