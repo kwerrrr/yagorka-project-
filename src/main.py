@@ -102,8 +102,58 @@ def add_expense() -> None:
     }
 
     transactions.append(new_transaction)
+
+    balance = calculate_balance()
+    if balance < 0:
+        print("⚠️ ВНИМАНИЕ: перерасход! Баланс отрицательный.")
+
     print(f"\n✅ Расход '{category}' на сумму {amount:.2f} руб. добавлен!")
 
+def add_income() -> None:
+        """
+        Добавляет запись о доходе.
+        """
+        print("\n" + "=" * 30)
+        print("ДОБАВЛЕНИЕ ДОХОДА")
+        print("=" * 30)
+
+        while True:
+            amount_input = input("Введите сумму дохода: ").strip()
+            try:
+                amount = float(amount_input)
+                if amount <= 0:
+                    print("❌ Сумма должна быть положительной!")
+                    continue
+                break
+            except ValueError:
+                print("❌ Введите корректное число")
+
+        source = input("Источник дохода (зарплата, стипендия): ").strip()
+        if not source:
+            source = "не указан"
+
+        new_transaction = {
+            "id": len(transactions) + 1,
+            "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "type": "доход",
+            "amount": amount,
+            "category": source,
+            "description": "",
+        }
+
+        transactions.append(new_transaction)
+        print(f"\n✅ Доход {amount:.2f} руб. добавлен!")
+
+def calculate_balance() -> float:
+    balance = 0.0
+
+    for transaction in transactions:
+        if transaction["type"] == "доход":
+            balance += transaction["amount"]
+        elif transaction["type"] == "расход":
+            balance -= transaction["amount"]
+
+    return balance
 
 def show_all() -> None:
     """
@@ -151,24 +201,28 @@ if __name__ == "__main__":
     while True:
         print("\nМеню:")
         print("1. Добавить расход")
-        print("2. Показать все операции")
-        print("3. Показать баланс")
-        print("4. Сохранить данные")
-        print("5. Выход")
+        print("2. Добавить доход")
+        print("3. Показать все операции")
+        print("4. Показать баланс")
+        print("5. Сохранить данные")
+        print("6. Выход")
 
         choice = input("Выберите действие(1-5): ").strip()
 
         if choice == "1":
             add_expense()
-        elif choice == "2":
-            show_all()
+        elif choice =="2":
+            add_income()
         elif choice == "3":
-            show_balance()
+            show_all()
         elif choice == "4":
-            save_data()
+            balance = calculate_balance()
+            print(f"\n Текущий баланс: {balance:.2f} руб.")
         elif choice == "5":
+            save_data()
+        elif choice == "6":
             save_data()
             print("👋 Выход из программы.")
             break
         else:
-            print("❌ Неверный выбор! Пожалуйста, выберите действие от 1 до 5.")
+            print("❌ Неверный выбор! Пожалуйста, выберите действие от 1 до 6.")
