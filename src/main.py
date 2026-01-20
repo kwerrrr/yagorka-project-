@@ -207,7 +207,7 @@ if __name__ == "__main__":
         print("5. Сохранить данные")
         print("6. Выход")
 
-        choice = input("Выберите действие(1-5): ").strip()
+        choice = input("Выберите действие(1-6): ").strip()
 
         if choice == "1":
             add_expense()
